@@ -54,8 +54,7 @@
     </div>
 
     <!-- Ringkasan -->
-    <div id="summary" class="mt-6 hidden bg-white shadow-sm rounded-2xl p-5 border border-slate-200"
-      style="display: none !important;">
+    <div id="summary" class="mt-6 hidden bg-white shadow-sm rounded-2xl p-5 border border-slate-200">
       <h2 class="text-lg font-semibold mb-3">Ringkasan</h2>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-sm">
         <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
@@ -90,8 +89,7 @@
               </th>
               <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Item
               </th>
-              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500"
-                style="display: none;">Harga Asli
+              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Harga Asli
               </th>
               <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Harga
                 Setelah Diskon</th>
@@ -126,7 +124,7 @@
       <!-- Modal Content -->
       <div class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
         <!-- Ringkasan dalam Modal -->
-        <div class="mb-6" style="display: none;">
+        <div class="mb-6">
           <h3 class="text-lg font-semibold mb-4 text-slate-800">📈 Ringkasan Perhitungan</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
@@ -167,8 +165,7 @@
                       Nama Pemesan</th>
                     <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">☕ Nama
                       Item</th>
-                    <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500"
-                      style="display: none;">💰
+                    <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">💰
                       Harga Asli</th>
                     <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">🎯
                       Harga Setelah Diskon</th>
@@ -297,7 +294,7 @@
           <td class="px-4 py-2 text-sm text-slate-500">${i + 1}</td>
           <td class="px-4 py-2 text-sm">${r.nama || '-'}</td>
           <td class="px-4 py-2 text-sm">${r.item || '-'}</td>
-          <td class="px-4 py-2 text-sm text-right" style="display: none;">${rupiah(r.hargaAsli)}</td>
+          <td class="px-4 py-2 text-sm text-right">${rupiah(r.hargaAsli)}</td>
           <td class="px-4 py-2 text-sm text-right font-semibold">${rupiah(r.hargaFinal)}</td>
         `;
         tbody.appendChild(tr);
@@ -315,7 +312,7 @@
           <td class="px-4 py-3 text-sm text-slate-500 font-medium">${i + 1}</td>
           <td class="px-4 py-3 text-sm font-medium">${r.nama || '-'}</td>
           <td class="px-4 py-3 text-sm">${r.item || '-'}</td>
-          <td class="px-4 py-3 text-sm text-right" style="display: none;">${rupiah(r.hargaAsli)}</td>
+          <td class="px-4 py-3 text-sm text-right">${rupiah(r.hargaAsli)}</td>
           <td class="px-4 py-3 text-sm text-right font-bold text-emerald-700">${rupiah(r.hargaFinal)}</td>
         `;
         tbody.appendChild(tr);
@@ -370,7 +367,7 @@
 
       // Info jika melebihi input
       if (sumHasil > totalDiskon) {
-        // showWarn('Total hasil setelah pembulatan ke atas melebihi total input. Ini wajar karena pembulatan ↑1.000 per item.');
+        showWarn('Total hasil setelah pembulatan ke atas melebihi total input. Ini wajar karena pembulatan ↑1.000 per item.');
       }
     }
 
