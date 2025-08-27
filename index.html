@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pembagian Total Setelah Diskon</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-slate-50 text-slate-800">
   <div class="max-w-4xl mx-auto p-6">
     <header class="mb-6">
       <h1 class="text-2xl font-bold tracking-tight">Hitung Pembagian Pesanan Setelah Diskon</h1>
-      <p class="text-sm text-slate-500">Masukkan daftar item (nama pemesan, nama item, harga asli) lalu total setelah diskon. Hasil dibagi proporsional dan dibulatkan ke atas per Rp1.000.</p>
+      <p class="text-sm text-slate-500">Masukkan daftar item (nama pemesan, nama item, harga asli) lalu total setelah
+        diskon. Hasil dibagi proporsional dan dibulatkan ke atas per Rp1.000.</p>
     </header>
 
     <!-- Card Input -->
@@ -18,11 +21,15 @@
       <div class="flex flex-col gap-3" id="items"></div>
 
       <div class="flex gap-2 mt-4">
-        <button id="addBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 active:scale-[.99]">
-          <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14m-7-7h14" stroke-width="2" stroke-linecap="round"/></svg>
+        <button id="addBtn"
+          class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 active:scale-[.99]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path d="M12 5v14m-7-7h14" stroke-width="2" stroke-linecap="round" />
+          </svg>
           Tambah Pesanan
         </button>
-        <button id="clearBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 active:scale-[.99]">
+        <button id="clearBtn"
+          class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 active:scale-[.99]">
           Bersihkan
         </button>
       </div>
@@ -33,19 +40,22 @@
           <div class="relative">
             <span class="absolute left-3 top-2.5 text-slate-400 text-sm">Rp</span>
             <input id="totalDiskon" type="number" min="0" step="100" placeholder="contoh: 81_400"
-                   class="w-full pl-8 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200" />
+              class="w-full pl-8 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200" />
           </div>
         </div>
         <div class="flex items-end">
-          <button id="calcBtn" class="w-full px-3 py-2 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 active:scale-[.99]">Hitung</button>
+          <button id="calcBtn"
+            class="w-full px-3 py-2 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 active:scale-[.99]">Hitung</button>
         </div>
       </div>
 
-      <p id="warn" class="hidden mt-3 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2"></p>
+      <p id="warn" class="hidden mt-3 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2">
+      </p>
     </div>
 
     <!-- Ringkasan -->
-    <div id="summary" class="mt-6 hidden bg-white shadow-sm rounded-2xl p-5 border border-slate-200">
+    <div id="summary" class="mt-6 hidden bg-white shadow-sm rounded-2xl p-5 border border-slate-200"
+      style="display: none !important;">
       <h2 class="text-lg font-semibold mb-3">Ringkasan</h2>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-sm">
         <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
@@ -65,7 +75,8 @@
           <div id="sumDelta" class="font-semibold"></div>
         </div>
       </div>
-      <p class="text-xs text-slate-500 mt-2">Catatan: Karena pembulatan <em>ke atas</em> per Rp1.000, total hasil bisa lebih besar dari total input.</p>
+      <p class="text-xs text-slate-500 mt-2">Catatan: Karena pembulatan <em>ke atas</em> per Rp1.000, total hasil bisa
+        lebih besar dari total input.</p>
     </div>
 
     <!-- Tabel Hasil -->
@@ -75,10 +86,15 @@
           <thead class="bg-slate-50">
             <tr>
               <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">#</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Pemesan</th>
-              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Item</th>
-              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Harga Asli</th>
-              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Harga Setelah Diskon</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Pemesan
+              </th>
+              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Item
+              </th>
+              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500"
+                style="display: none;">Harga Asli
+              </th>
+              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Harga
+                Setelah Diskon</th>
             </tr>
           </thead>
           <tbody id="hasilBody" class="divide-y divide-slate-100"></tbody>
@@ -91,26 +107,116 @@
     </footer>
   </div>
 
+  <!-- Modal Popup -->
+  <div id="resultModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+      <!-- Modal Header -->
+      <div class="bg-gradient-to-r from-emerald-600 to-emerald-700 px-6 py-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-xl font-bold text-white">📊 Hasil Perhitungan Pembagian Diskon</h2>
+          <button id="closeModal" class="text-white hover:text-emerald-200 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="size-6" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor">
+              <path d="M18 6L6 18M6 6l12 12" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Content -->
+      <div class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
+        <!-- Ringkasan dalam Modal -->
+        <div class="mb-6" style="display: none;">
+          <h3 class="text-lg font-semibold mb-4 text-slate-800">📈 Ringkasan Perhitungan</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 rounded-xl border border-blue-200">
+              <div class="text-blue-600 text-sm font-medium">Total Harga Asli</div>
+              <div id="modalSumAsli" class="text-lg font-bold text-blue-800"></div>
+            </div>
+            <div class="bg-gradient-to-br from-purple-50 to-purple-100 p-4 rounded-xl border border-purple-200">
+              <div class="text-purple-600 text-sm font-medium">Total Setelah Diskon (input)</div>
+              <div id="modalSumDiskonInput" class="text-lg font-bold text-purple-800"></div>
+            </div>
+            <div class="bg-gradient-to-br from-emerald-50 to-emerald-100 p-4 rounded-xl border border-emerald-200">
+              <div class="text-emerald-600 text-sm font-medium">Total Hasil (dibulatkan)</div>
+              <div id="modalSumHasil" class="text-lg font-bold text-emerald-800"></div>
+            </div>
+            <div class="bg-gradient-to-br from-amber-50 to-amber-100 p-4 rounded-xl border border-amber-200">
+              <div class="text-amber-600 text-sm font-medium">Selisih (hasil - input)</div>
+              <div id="modalSumDelta" class="text-lg font-bold"></div>
+            </div>
+          </div>
+          <div class="mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+            <p class="text-sm text-slate-600">
+              <span class="font-medium">💡 Catatan:</span> Karena pembulatan <em>ke atas</em> per Rp1.000, total hasil
+              bisa lebih besar dari total input.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tabel Hasil dalam Modal -->
+        <div>
+          <h3 class="text-lg font-semibold mb-4 text-slate-800">🍽️ Detail Pembagian per Item</h3>
+          <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="overflow-x-auto">
+              <table class="min-w-full divide-y divide-slate-200">
+                <thead class="bg-slate-50">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">#</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">👤
+                      Nama Pemesan</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">☕ Nama
+                      Item</th>
+                    <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500"
+                      style="display: none;">💰
+                      Harga Asli</th>
+                    <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">🎯
+                      Harga Setelah Diskon</th>
+                  </tr>
+                </thead>
+                <tbody id="modalHasilBody" class="divide-y divide-slate-100"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="bg-slate-50 px-6 py-4 border-t border-slate-200">
+        <div class="flex justify-end gap-3">
+          <button id="closeModalBtn"
+            class="px-4 py-2 rounded-xl bg-slate-200 text-slate-700 hover:bg-slate-300 transition-colors">
+            Tutup
+          </button>
+          <button id="printBtn"
+            class="px-4 py-2 rounded-xl bg-emerald-600 text-white hover:bg-emerald-700 transition-colors">
+            🖨️ Cetak Hasil
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <template id="rowTemplate">
     <div class="grid grid-cols-1 md:grid-cols-12 gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50">
       <div class="md:col-span-3">
         <label class="block text-xs font-medium mb-1 text-slate-600">Nama Pemesan</label>
         <input type="text" data-field="nama" placeholder="misal: Reza"
-               class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200">
+          class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200">
       </div>
       <div class="md:col-span-5">
         <label class="block text-xs font-medium mb-1 text-slate-600">Nama Item</label>
         <input type="text" data-field="item" placeholder="misal: Coffee 1"
-               class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200">
+          class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200">
       </div>
       <div class="md:col-span-3">
         <label class="block text-xs font-medium mb-1 text-slate-600">Harga Asli (Rp)</label>
         <input type="number" min="0" step="100" data-field="harga" placeholder="misal: 29000"
-               class="w-full px-3 py-2 rounded-xl border border-slate-300 text-right focus:outline-none focus:ring-4 focus:ring-slate-200">
+          class="w-full px-3 py-2 rounded-xl border border-slate-300 text-right focus:outline-none focus:ring-4 focus:ring-slate-200">
       </div>
       <div class="md:col-span-1 flex items-end">
         <button type="button" data-action="remove"
-                class="w-full px-3 py-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 active:scale-[.99]">
+          class="w-full px-3 py-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 active:scale-[.99]">
           Hapus
         </button>
       </div>
@@ -156,7 +262,7 @@
 
     function showWarn(msg) {
       const w = document.getElementById('warn');
-      if (!msg) { w.classList.add('hidden'); w.textContent=''; return; }
+      if (!msg) { w.classList.add('hidden'); w.textContent = ''; return; }
       w.textContent = msg;
       w.classList.remove('hidden');
     }
@@ -172,6 +278,16 @@
       deltaEl.className = 'font-semibold ' + (delta > 0 ? 'text-amber-600' : delta < 0 ? 'text-emerald-600' : 'text-slate-700');
     }
 
+    function renderModalSummary(sumAsli, diskonInput, sumHasil) {
+      document.getElementById('modalSumAsli').textContent = rupiah(sumAsli);
+      document.getElementById('modalSumDiskonInput').textContent = rupiah(diskonInput);
+      document.getElementById('modalSumHasil').textContent = rupiah(sumHasil);
+      const delta = sumHasil - diskonInput;
+      const deltaEl = document.getElementById('modalSumDelta');
+      deltaEl.textContent = (delta >= 0 ? '+' : '') + rupiah(delta).replace('Rp', 'Rp ');
+      deltaEl.className = 'text-lg font-bold ' + (delta > 0 ? 'text-amber-700' : delta < 0 ? 'text-emerald-700' : 'text-slate-700');
+    }
+
     function renderTable(rowsOut) {
       const tbody = document.getElementById('hasilBody');
       tbody.innerHTML = '';
@@ -181,12 +297,39 @@
           <td class="px-4 py-2 text-sm text-slate-500">${i + 1}</td>
           <td class="px-4 py-2 text-sm">${r.nama || '-'}</td>
           <td class="px-4 py-2 text-sm">${r.item || '-'}</td>
-          <td class="px-4 py-2 text-sm text-right">${rupiah(r.hargaAsli)}</td>
+          <td class="px-4 py-2 text-sm text-right" style="display: none;">${rupiah(r.hargaAsli)}</td>
           <td class="px-4 py-2 text-sm text-right font-semibold">${rupiah(r.hargaFinal)}</td>
         `;
         tbody.appendChild(tr);
       });
       document.getElementById('hasilWrap').classList.remove('hidden');
+    }
+
+    function renderModalTable(rowsOut) {
+      const tbody = document.getElementById('modalHasilBody');
+      tbody.innerHTML = '';
+      rowsOut.forEach((r, i) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50 transition-colors';
+        tr.innerHTML = `
+          <td class="px-4 py-3 text-sm text-slate-500 font-medium">${i + 1}</td>
+          <td class="px-4 py-3 text-sm font-medium">${r.nama || '-'}</td>
+          <td class="px-4 py-3 text-sm">${r.item || '-'}</td>
+          <td class="px-4 py-3 text-sm text-right" style="display: none;">${rupiah(r.hargaAsli)}</td>
+          <td class="px-4 py-3 text-sm text-right font-bold text-emerald-700">${rupiah(r.hargaFinal)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function showModal() {
+      document.getElementById('resultModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden'; // Prevent background scrolling
+    }
+
+    function hideModal() {
+      document.getElementById('resultModal').classList.add('hidden');
+      document.body.style.overflow = 'auto'; // Restore scrolling
     }
 
     function hitung() {
@@ -218,18 +361,53 @@
       renderSummary(totalAsli, totalDiskon, sumHasil);
       renderTable(out);
 
+      // Render modal content
+      renderModalSummary(totalAsli, totalDiskon, sumHasil);
+      renderModalTable(out);
+
+      // Show modal
+      showModal();
+
       // Info jika melebihi input
       if (sumHasil > totalDiskon) {
-        showWarn('Total hasil setelah pembulatan ke atas melebihi total input. Ini wajar karena pembulatan ↑1.000 per item.');
+        // showWarn('Total hasil setelah pembulatan ke atas melebihi total input. Ini wajar karena pembulatan ↑1.000 per item.');
       }
     }
 
     // Hook UI
     document.getElementById('addBtn').addEventListener('click', () => addRow());
-    document.getElementById('clearBtn').addEventListener('click', () => { itemsEl.innerHTML=''; document.getElementById('hasilWrap').classList.add('hidden'); document.getElementById('summary').classList.add('hidden'); showWarn(''); });
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      itemsEl.innerHTML = '';
+      document.getElementById('hasilWrap').classList.add('hidden');
+      document.getElementById('summary').classList.add('hidden');
+      showWarn('');
+      hideModal();
+    });
     document.getElementById('calcBtn').addEventListener('click', hitung);
 
-    // Seed contoh 3 baris
+    // Modal event listeners
+    document.getElementById('closeModal').addEventListener('click', hideModal);
+    document.getElementById('closeModalBtn').addEventListener('click', hideModal);
+
+    // Close modal when clicking outside
+    document.getElementById('resultModal').addEventListener('click', (e) => {
+      if (e.target.id === 'resultModal') {
+        hideModal();
+      }
+    });
+
+    // Print functionality
+    document.getElementById('printBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        hideModal();
+      }
+    });
   </script>
 </body>
+
 </html>
