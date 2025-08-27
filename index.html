@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pembagian Total Setelah Diskon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <div class="max-w-4xl mx-auto p-6">
+    <header class="mb-6">
+      <h1 class="text-2xl font-bold tracking-tight">Hitung Pembagian Pesanan Setelah Diskon</h1>
+      <p class="text-sm text-slate-500">Masukkan daftar item (nama pemesan, nama item, harga asli) lalu total setelah diskon. Hasil dibagi proporsional dan dibulatkan ke atas per Rp1.000.</p>
+    </header>
+
+    <!-- Card Input -->
+    <div class="bg-white shadow-sm rounded-2xl p-5 border border-slate-200">
+      <div class="flex flex-col gap-3" id="items"></div>
+
+      <div class="flex gap-2 mt-4">
+        <button id="addBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-900 text-white hover:bg-slate-800 active:scale-[.99]">
+          <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 5v14m-7-7h14" stroke-width="2" stroke-linecap="round"/></svg>
+          Tambah Pesanan
+        </button>
+        <button id="clearBtn" class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 active:scale-[.99]">
+          Bersihkan
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-6">
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm font-medium mb-1">Total Harga Setelah Diskon</label>
+          <div class="relative">
+            <span class="absolute left-3 top-2.5 text-slate-400 text-sm">Rp</span>
+            <input id="totalDiskon" type="number" min="0" step="100" placeholder="contoh: 81_400"
+                   class="w-full pl-8 pr-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200" />
+          </div>
+        </div>
+        <div class="flex items-end">
+          <button id="calcBtn" class="w-full px-3 py-2 rounded-xl bg-emerald-600 text-white font-medium hover:bg-emerald-700 active:scale-[.99]">Hitung</button>
+        </div>
+      </div>
+
+      <p id="warn" class="hidden mt-3 text-sm text-amber-600 bg-amber-50 border border-amber-200 rounded-xl px-3 py-2"></p>
+    </div>
+
+    <!-- Ringkasan -->
+    <div id="summary" class="mt-6 hidden bg-white shadow-sm rounded-2xl p-5 border border-slate-200">
+      <h2 class="text-lg font-semibold mb-3">Ringkasan</h2>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-sm">
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="text-slate-500">Total Harga Asli</div>
+          <div id="sumAsli" class="font-semibold"></div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="text-slate-500">Total Setelah Diskon (input)</div>
+          <div id="sumDiskonInput" class="font-semibold"></div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="text-slate-500">Total Hasil (setelah dibulatkan)</div>
+          <div id="sumHasil" class="font-semibold"></div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <div class="text-slate-500">Selisih (hasil - input)</div>
+          <div id="sumDelta" class="font-semibold"></div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 mt-2">Catatan: Karena pembulatan <em>ke atas</em> per Rp1.000, total hasil bisa lebih besar dari total input.</p>
+    </div>
+
+    <!-- Tabel Hasil -->
+    <div id="hasilWrap" class="mt-4 hidden bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200">
+          <thead class="bg-slate-50">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">#</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Pemesan</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">Nama Item</th>
+              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Harga Asli</th>
+              <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wider text-slate-500">Harga Setelah Diskon</th>
+            </tr>
+          </thead>
+          <tbody id="hasilBody" class="divide-y divide-slate-100"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <footer class="mt-10 text-center text-xs text-slate-400">
+      &copy; Pembagi Diskon • Tailwind UI sederhana
+    </footer>
+  </div>
+
+  <template id="rowTemplate">
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 p-3 rounded-xl border border-slate-200 bg-slate-50">
+      <div class="md:col-span-3">
+        <label class="block text-xs font-medium mb-1 text-slate-600">Nama Pemesan</label>
+        <input type="text" data-field="nama" placeholder="misal: Reza"
+               class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200">
+      </div>
+      <div class="md:col-span-5">
+        <label class="block text-xs font-medium mb-1 text-slate-600">Nama Item</label>
+        <input type="text" data-field="item" placeholder="misal: Coffee 1"
+               class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-4 focus:ring-slate-200">
+      </div>
+      <div class="md:col-span-3">
+        <label class="block text-xs font-medium mb-1 text-slate-600">Harga Asli (Rp)</label>
+        <input type="number" min="0" step="100" data-field="harga" placeholder="misal: 29000"
+               class="w-full px-3 py-2 rounded-xl border border-slate-300 text-right focus:outline-none focus:ring-4 focus:ring-slate-200">
+      </div>
+      <div class="md:col-span-1 flex items-end">
+        <button type="button" data-action="remove"
+                class="w-full px-3 py-2 rounded-xl bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 active:scale-[.99]">
+          Hapus
+        </button>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    const itemsEl = document.getElementById('items');
+    const rowTpl = document.getElementById('rowTemplate');
+
+    const rupiah = n => (isNaN(n) ? '-' : new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Math.round(n)));
+    const ceilTo = (value, step = 1000) => Math.ceil((+value || 0) / step) * step;
+
+    function addRow(prefill = {}) {
+      const node = rowTpl.content.cloneNode(true);
+      const nama = node.querySelector('[data-field="nama"]');
+      const item = node.querySelector('[data-field="item"]');
+      const harga = node.querySelector('[data-field="harga"]');
+      const remove = node.querySelector('[data-action="remove"]');
+
+      nama.value = prefill.nama || '';
+      item.value = prefill.item || '';
+      harga.value = prefill.harga || '';
+
+      remove.addEventListener('click', () => nodeRoot.remove());
+      const nodeRoot = document.createElement('div');
+      nodeRoot.appendChild(node);
+      itemsEl.appendChild(nodeRoot);
+    }
+
+    function readRows() {
+      const rows = [];
+      itemsEl.querySelectorAll('[data-field="nama"]').forEach((_, idx) => {
+        const wrap = itemsEl.children[idx];
+        rows.push({
+          nama: wrap.querySelector('[data-field="nama"]').value.trim(),
+          item: wrap.querySelector('[data-field="item"]').value.trim(),
+          harga: parseFloat(wrap.querySelector('[data-field="harga"]').value) || 0
+        });
+      });
+      return rows.filter(r => r.nama || r.item || r.harga > 0);
+    }
+
+    function showWarn(msg) {
+      const w = document.getElementById('warn');
+      if (!msg) { w.classList.add('hidden'); w.textContent=''; return; }
+      w.textContent = msg;
+      w.classList.remove('hidden');
+    }
+
+    function renderSummary(sumAsli, diskonInput, sumHasil) {
+      document.getElementById('summary').classList.remove('hidden');
+      document.getElementById('sumAsli').textContent = rupiah(sumAsli);
+      document.getElementById('sumDiskonInput').textContent = rupiah(diskonInput);
+      document.getElementById('sumHasil').textContent = rupiah(sumHasil);
+      const delta = sumHasil - diskonInput;
+      const deltaEl = document.getElementById('sumDelta');
+      deltaEl.textContent = (delta >= 0 ? '+' : '') + rupiah(delta).replace('Rp', 'Rp ');
+      deltaEl.className = 'font-semibold ' + (delta > 0 ? 'text-amber-600' : delta < 0 ? 'text-emerald-600' : 'text-slate-700');
+    }
+
+    function renderTable(rowsOut) {
+      const tbody = document.getElementById('hasilBody');
+      tbody.innerHTML = '';
+      rowsOut.forEach((r, i) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="px-4 py-2 text-sm text-slate-500">${i + 1}</td>
+          <td class="px-4 py-2 text-sm">${r.nama || '-'}</td>
+          <td class="px-4 py-2 text-sm">${r.item || '-'}</td>
+          <td class="px-4 py-2 text-sm text-right">${rupiah(r.hargaAsli)}</td>
+          <td class="px-4 py-2 text-sm text-right font-semibold">${rupiah(r.hargaFinal)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('hasilWrap').classList.remove('hidden');
+    }
+
+    function hitung() {
+      showWarn('');
+      const totalDiskon = parseFloat(document.getElementById('totalDiskon').value);
+      const rows = readRows();
+      const totalAsli = rows.reduce((a, b) => a + (b.harga || 0), 0);
+
+      if (!rows.length) return showWarn('Tambahkan minimal 1 baris pesanan.');
+      if (!totalAsli) return showWarn('Total harga asli = 0. Isi harga asli untuk setiap item.');
+      if (!(totalDiskon > 0)) return showWarn('Masukkan Total Harga Setelah Diskon yang valid (> 0).');
+
+      // Hitung proporsi dan pembulatan ke atas 1.000
+      const out = rows.map(r => {
+        const porsi = r.harga / totalAsli;
+        const bagian = totalDiskon * porsi;
+        const dibulatkan = ceilTo(bagian, 1000); // sesuai permintaan: bulatkan ke atas 1000
+        return {
+          nama: r.nama,
+          item: r.item,
+          hargaAsli: r.harga,
+          hargaFinal: dibulatkan
+        };
+      });
+
+      const sumHasil = out.reduce((a, b) => a + b.hargaFinal, 0);
+
+      // Render
+      renderSummary(totalAsli, totalDiskon, sumHasil);
+      renderTable(out);
+
+      // Info jika melebihi input
+      if (sumHasil > totalDiskon) {
+        showWarn('Total hasil setelah pembulatan ke atas melebihi total input. Ini wajar karena pembulatan ↑1.000 per item.');
+      }
+    }
+
+    // Hook UI
+    document.getElementById('addBtn').addEventListener('click', () => addRow());
+    document.getElementById('clearBtn').addEventListener('click', () => { itemsEl.innerHTML=''; document.getElementById('hasilWrap').classList.add('hidden'); document.getElementById('summary').classList.add('hidden'); showWarn(''); });
+    document.getElementById('calcBtn').addEventListener('click', hitung);
+
+    // Seed contoh 3 baris
+  </script>
+</body>
+</html>
