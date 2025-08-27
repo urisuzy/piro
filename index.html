@@ -57,6 +57,10 @@
 
     <!-- Tabel Hasil -->
     <div id="hasilWrap" class="mt-4 hidden bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 border-b border-slate-200 bg-slate-50">
+        <h3 class="text-lg font-semibold text-slate-800">📋 Hasil Pembagian</h3>
+        <p id="tanggalHasil" class="text-sm text-slate-500 mt-1"></p>
+      </div>
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-slate-200">
           <thead class="bg-slate-50">
@@ -102,7 +106,10 @@
       <div class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
         <!-- Tabel Hasil dalam Modal -->
         <div>
-          <h3 class="text-lg font-semibold mb-4 text-slate-800">🍽️ Detail Pembagian per Item</h3>
+          <div class="flex items-center justify-between mb-4">
+            <h3 class="text-lg font-semibold text-slate-800">🍽️ Detail Pembagian per Item</h3>
+            <p id="modalTanggalHasil" class="text-sm text-slate-500"></p>
+          </div>
           <div class="bg-white rounded-xl border border-slate-200 overflow-hidden shadow-sm">
             <div class="overflow-x-auto">
               <table class="min-w-full divide-y divide-slate-200">
@@ -183,6 +190,23 @@
     const rupiah = n => (isNaN(n) ? '-' : new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(Math.round(n)));
     const ceilTo = (value, step = 1000) => Math.ceil((+value || 0) / step) * step;
 
+    // Fungsi untuk format tanggal Indonesia
+    function formatTanggalIndonesia() {
+      const sekarang = new Date();
+      const namaHari = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+      const namaBulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+      const hari = namaHari[sekarang.getDay()];
+      const tanggal = sekarang.getDate();
+      const bulan = namaBulan[sekarang.getMonth()];
+      const tahun = sekarang.getFullYear();
+      const jam = sekarang.getHours().toString().padStart(2, '0');
+      const menit = sekarang.getMinutes().toString().padStart(2, '0');
+
+      return `${hari}, ${tanggal} ${bulan} ${tahun} • ${jam}:${menit} WIB`;
+    }
+
     function addRow(prefill = {}) {
       const node = rowTpl.content.cloneNode(true);
       const nama = node.querySelector('[data-field="nama"]');
@@ -234,6 +258,9 @@
         `;
         tbody.appendChild(tr);
       });
+
+      // Tampilkan tanggal di header tabel
+      document.getElementById('tanggalHasil').textContent = formatTanggalIndonesia();
       document.getElementById('hasilWrap').classList.remove('hidden');
     }
 
@@ -252,6 +279,9 @@
         `;
         tbody.appendChild(tr);
       });
+
+      // Tampilkan tanggal di modal
+      document.getElementById('modalTanggalHasil').textContent = formatTanggalIndonesia();
     }
 
     function showModal() {
